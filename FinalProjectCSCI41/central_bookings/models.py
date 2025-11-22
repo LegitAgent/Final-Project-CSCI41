@@ -18,6 +18,9 @@ class Organizer(models.Model):
     contact_email = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=24)
 
+    def __str__(self):
+        return self.name
+    
     class Meta:
         verbose_name = 'Organizer'
 
@@ -33,7 +36,10 @@ class Participant(models.Model):
         'Faculty': 'Faculty',
         'Staff': 'Staff'
     }
-    
+
+    def __str__(self):
+        return self.name
+
     name = models.CharField(max_length=255)
     participant_type = models.CharField(choices=PARTICIPANT_TYPES)
     department = models.CharField(max_length=255)
@@ -43,7 +49,7 @@ class Participant(models.Model):
         verbose_name = 'Participant'
 
 class ActivityBooking(models.Model):
-    
+
     activity = models.ForeignKey(Activity,
                                  null=False,
                                  on_delete=models.CASCADE,
@@ -58,6 +64,9 @@ class Location(models.Model):
     
     name = models.CharField(max_length=255)
     maximum_capacity = models.IntegerField(default=1, min_value=1)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = 'Location'
