@@ -29,6 +29,9 @@ class Activity(models.Model):
     name = models.CharField(max_length=255)
     expected_participants = models.IntegerField
 
+    def get_absolute_url(self):
+        return reverse('ledger: recipe', args=[str(self.pk)])
+
 class Participant(models.Model):
     
     PARTICIPANT_TYPES = {
@@ -53,7 +56,7 @@ class ActivityBooking(models.Model):
     activity = models.ForeignKey(Activity,
                                  null=False,
                                  on_delete=models.CASCADE,
-                                 related_name='activities')
+                                 related_name='activity_bookings')
 
     # i realized idk if participant should be a Participant or Profile...
 
@@ -63,7 +66,7 @@ class ActivityBooking(models.Model):
 class Location(models.Model):
     
     name = models.CharField(max_length=255)
-    maximum_capacity = models.IntegerField(default=1, min_value=1)
+    maximum_capacity = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
@@ -81,7 +84,7 @@ class Reservation(models.Model):
     activity = models.ForeignKey(Activity,
                                  null=False,
                                  on_delete=models.CASCADE,
-                                 related_name='activities')
+                                 related_name='reservations')
     
     class Meta:
         verbose_name = 'Reservation'
