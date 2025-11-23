@@ -5,13 +5,13 @@ from django.urls import reverse
 
 class Organizer(models.Model):
     
+    name = models.CharField(max_length=255)
+    address = models.TextField()
+    
     ORGANIZER_TYPES = {
         'Internal': 'Internal',
         'External': 'External'
     }
-
-    name = models.CharField(max_length=255)
-    address = models.TextField()
     organizer_type = models.CharField(choices=ORGANIZER_TYPES)
 
     contact_name = models.CharField(max_length=255)
@@ -29,8 +29,23 @@ class Activity(models.Model):
     name = models.CharField(max_length=255)
     expected_participants = models.IntegerField
 
+    organizer = models.ForeignKey(Organizer,
+                                  null=True,
+                                  on_delete=models.SET_NULL,
+                                  related_name='activities')
+
+    def __str__(self):
+        return self.name
+
     def get_absolute_url(self):
-        return reverse('ledger: recipe', args=[str(self.pk)])
+        return reverse('central_bookings:activity', args=[str(self.pk)])
+    
+    def get_reservations(self):
+        return self.reservations.all()
+
+    class Meta:
+        verbose_name = 'Activity'
+        verbose_name_plural = 'Activities'
 
 class Participant(models.Model):
     
@@ -46,7 +61,7 @@ class Participant(models.Model):
     name = models.CharField(max_length=255)
     participant_type = models.CharField(choices=PARTICIPANT_TYPES)
     department = models.CharField(max_length=255)
-    birthdate = models.DateTimeField
+    birthdate = models.DateTimeField(default='2000-0-0 00:00:00')
 
     class Meta:
         verbose_name = 'Participant'
@@ -75,7 +90,10 @@ class Location(models.Model):
         verbose_name = 'Location'
 
 class Reservation(models.Model):
-    
+
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+
     location = models.ForeignKey(Location,
                                  null=False,
                                  on_delete=models.CASCADE,
@@ -85,7 +103,10 @@ class Reservation(models.Model):
                                  null=False,
                                  on_delete=models.CASCADE,
                                  related_name='reservations')
-    
+
+    def __str__(self):
+        return self.activity.name + " happening in " + self.location.name + " from " + str(self.start_time) + " to " + str(self.end_time)
+
     class Meta:
         verbose_name = 'Reservation'
     

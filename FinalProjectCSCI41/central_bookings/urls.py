@@ -4,7 +4,8 @@ from .views import(
 )
 
 urlpatterns = [
-    # PATTERNS GO HERE
+    path('activities/', ActivityListView.as_view(), name='activities-list'),
+    path('activities/activity/<int:pk>', ActivityDetailView.as_view(), name='activity')
 ]
 
 app_name = 'central_bookings'

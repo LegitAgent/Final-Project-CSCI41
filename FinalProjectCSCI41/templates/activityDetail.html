@@ -7,8 +7,16 @@
         {{object.name}}
     </h2>
 
-    hello world!
+    Organizer: {{object.organizer}} <br>
+    {% for reservation in object.get_reservations %}
+        Location: {{reservation.location}} <br>
+        Start Time: {{reservation.start_time}} <br>
+        End Time: {{reservation.end_time}}
+    {% endfor %}
 
-    <a href="{{object.get_absolute_url}}">{{"<--- Back to recipes list"}}</a>
+    <br><br><hr><br>
+    <button type="submit">
+        <p><a href="{% url 'central_bookings:activities-list' %}">{{"Back to full activity list"}}</a></p>
+    </button>
 
 {% endblock %}
