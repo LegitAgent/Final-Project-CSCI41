@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Central Bookings{% endblock %}</title>
+
+{% block content %}
+    <h2> 
+        {{object.name}}
+    </h2>
+
+    hello world!
+
+    <a href="{{object.get_absolute_url}}">{{"<--- Back to recipes list"}}</a>
+
+{% endblock %}
