@@ -29,3 +29,16 @@ class EnlistedActivityListView(ListView):
 
     # need to do a little bit of logic here
     # to ensure that only the user's enlisted activities show up
+
+def enlist_in_activity(request, activity_id):
+    # logic to enlist the user in the activity with id=activity_id
+
+    activity = Activity.objects.get(id=activity_id)
+    user = request.user
+
+    if request.method == 'POST':
+        booking = ActivityBooking.objects.create(
+            participant=user,
+            activity=activity
+        )
+        booking.save()

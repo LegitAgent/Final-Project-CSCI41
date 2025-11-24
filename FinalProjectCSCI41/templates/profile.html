@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Central Bookings{% endblock %}</title>
+
+{% block content %}
+
+ 
+    <h1> 
+        User Profile: {{user.id}}
+    </h1>
+    <ul>
+        <li>
+            Username: {{profile.name}}
+        </li>
+        <li>
+            Email: {{profile.participant_type}}
+        </li>
+        <li>Department: {{profile.department}}</li>
+        <li>Birthdate: {{profile.birthdate}}</li>
+{% endblock %}

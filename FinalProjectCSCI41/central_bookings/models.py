@@ -72,6 +72,11 @@ class ActivityBooking(models.Model):
                                  null=False,
                                  on_delete=models.CASCADE,
                                  related_name='activity_bookings')
+    participant = models.ForeignKey(Participant,
+                                    null=False, 
+                                    on_delete=models.CASCADE,
+                                    related_name='activity_bookings')
+    attended = models.BooleanField(default=False)
 
     # i realized idk if participant should be a Participant or Profile...
 
