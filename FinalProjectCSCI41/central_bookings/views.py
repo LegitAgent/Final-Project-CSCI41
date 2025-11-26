@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -39,6 +39,9 @@ def enlist_in_activity(request, activity_id):
     if request.method == 'POST':
         booking = ActivityBooking.objects.create(
             participant=user,
-            activity=activity
+            activity=activity,
+            attended = False
         )
         booking.save()
+        return redirect('central_bookings:activities-list')
+

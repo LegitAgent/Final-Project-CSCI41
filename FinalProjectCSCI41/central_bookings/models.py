@@ -1,4 +1,5 @@
 from django.db import models
+from account.models import User
 from django.urls import reverse
 
 # Create your models here.
@@ -72,7 +73,7 @@ class ActivityBooking(models.Model):
                                  null=False,
                                  on_delete=models.CASCADE,
                                  related_name='activity_bookings')
-    participant = models.ForeignKey(Participant,
+    participant = models.ForeignKey(User,
                                     null=False, 
                                     on_delete=models.CASCADE,
                                     related_name='activity_bookings')
@@ -96,6 +97,7 @@ class Location(models.Model):
 
 class Reservation(models.Model):
 
+    date = models.CharField(null=False, default='2000-01-01')
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
 

@@ -12,6 +12,10 @@
         Location: {{reservation.location}} <br>
         Start Time: {{reservation.start_time}} <br>
         End Time: {{reservation.end_time}}
+        <form method = "POST" action="{% url 'central_bookings:enlist' object.id %}">
+            {% csrf_token %}
+            <button type="submit">Enlist in Activity</button>
+        </form>
     {% endfor %}
 
     <br><br><hr><br>
