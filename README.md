@@ -24,25 +24,33 @@ pip install -r requirements.txt
 
 ## 4. Setup Environment Variables
 Copy and edit the .env.example file to store all senestive information suchn as passwords, database credentials and etc.
-Make sure to edit the file name to .env .
+Make sure to edit the file name to `.env`.
 
 ## 5. Set Up PostgreSQL
 Assuming you have PostgreSQL installed, the command below should prompt you for your postgreSQL password.
 ```bash
 psql -U postgres
 ```
-Then create the database and user:
+Then create the user:
 ```sql
-CREATE DATABASE finalproject;
 CREATE USER finaluser WITH PASSWORD 'yourpassword';
 ```
 
 ## 6. Run Initial Migrations
+**For Windows ONLY**
+A setup batch file has been provided to automate database creation from scratch. It also creates
+a python superuser for the admin site. Simply click on `setup.bat` to run.
+
+**Otherwise, proceed manually*
 ```bash
 python manage.py migrate
 ```
 
 ## 7. Run the Server
+**For Windows ONLY**
+A setup batch file has been provided to automate running the server. Simply click on `run.bat` to run.
+
+**Otherwise, proceed manually*
 ```bash
 python manage.py runserver
 ```
