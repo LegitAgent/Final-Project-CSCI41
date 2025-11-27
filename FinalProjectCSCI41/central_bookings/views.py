@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
+from django.db import connection
+from django.db.models import Prefetch
 
-from .models import Participant, Activity, ActivityBooking
+from .models import Activity, ActivityBooking, Reservation
 
 # Create your views here.
 
@@ -44,4 +46,47 @@ def enlist_in_activity(request, activity_id):
         )
         booking.save()
         return redirect('central_bookings:activities-list')
+    
+def get_enlisted_activities_for_user(request):
+    user = request.user
+
+    # prefetch reservations with their locations to avoid extra queries.
+    #seperate querysets for booking and reservation to optimize queries 
+    reservation_qs = Reservation.objects.select_related('location')
+    bookings_qs = (
+        ActivityBooking.objects
+        .filter(participant=user)
+        .select_related('participant', 'activity', 'activity__organizer') 
+        #joins the tables for quick access to related fields
+        .prefetch_related(Prefetch('activity__reservations', queryset=reservation_qs, to_attr='prefetched_reservations')) 
+        # prefetch reservations with locations for activities
+        # 1st args: fetch bookings 2nd args: fetch reservations related to activities in bookings 
+        # 3rd args: store prefetched reservations in 'prefetched_reservations' attribute
+    )
+
+    # build a list of results (one item per reservation if multiple reservations)
+    enlisted = []
+    for booking in bookings_qs:
+        activity = booking.activity
+        organizer_name = activity.organizer.name 
+        user_name = booking.participant.name
+
+        reservations = getattr(activity, 'prefetched_reservations', list(activity.reservations.all()))
+        for r in reservations:
+            #dictionary to hold details of each enlisted activity per reservation
+            #its like having internal ctx inside the ctx dictionary
+            enlisted.append({
+                'activity_name': activity.name,
+                'user_name': user_name,
+                'attended': booking.attended,
+                'date': r.date,
+                'start_time': r.start_time,
+                'end_time': r.end_time,
+                'location': r.location.name if r.location else None,
+                'organizer': organizer_name,
+            })
+
+    ctx = {'enlisted_activities': enlisted, 'profile': user}
+    return render(request, 'profile.html', ctx)
+
 
