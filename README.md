@@ -37,7 +37,7 @@ CREATE USER finaluser WITH PASSWORD 'yourpassword';
 ```
 
 ## 6. Run Initial Migrations
-**For Windows ONLY**
+**For Windows ONLY**<br>
 A setup batch file has been provided to automate database creation from scratch. It also creates
 a python superuser for the admin site. Simply click on `setup.bat` to run.
 
@@ -47,7 +47,7 @@ python manage.py migrate
 ```
 
 ## 7. Run the Server
-**For Windows ONLY**
+**For Windows ONLY**<br>
 A setup batch file has been provided to automate running the server. Simply click on `run.bat` to run.
 
 **Otherwise, proceed manually**
