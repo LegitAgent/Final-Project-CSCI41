@@ -8,7 +8,8 @@ from django.db.models import Prefetch
 from .models import Activity, ActivityBooking, Reservation
 
 # Create your views here.
-
+def index(request):
+    return render(request, 'index.html')
 
 class ActivityListView(ListView):
     # show ALL activities, regardless of whether the user has enlisted in them
