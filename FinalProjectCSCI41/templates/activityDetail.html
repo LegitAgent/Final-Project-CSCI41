@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+<title>{% block title %}Central Bookings{% endblock %}</title>
+
+{% block content %}
+    <h2> 
+        {{object.name}} - {{object.id}}
+    </h2>
+
+    Organizer: {{object.organizer}} <br>
+    {% for reservation in object.get_reservations %}
+        Location: {{reservation.location}} <br>
+        Start Time: {{reservation.start_time}} <br>
+        End Time: {{reservation.end_time}}
+        <form method = "POST" action="{% url 'central_bookings:enlist' object.id %}">
+            {% csrf_token %}
+            <button type="submit">Enlist in Activity</button>
+        </form>
+    {% endfor %}
+
+    <br><br><hr><br>
+    <button type="submit">
+        <p><a href="{% url 'central_bookings:activities-list' %}">{{"Back to full activity list"}}</a></p>
+    </button>
+
+{% endblock %}
