@@ -7,15 +7,19 @@ from .models import Organizer, Activity, Participant, ActivityBooking, Location,
 
 class ActivityInLine(admin.TabularInline):
     model = Activity
+    extra = 1
 
 class ActivityBookingInLine(admin.TabularInline):
     model = ActivityBooking
+    extra = 1
 
 class LocationInLine(admin.TabularInline):
     model = Location
+    extra = 1
 
 class ReservationInLine(admin.TabularInline):
     model = Reservation
+    
 
 # set up the actual admins
 
