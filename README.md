@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ```
 
 ## 4. Setup Environment Variables
-Copy and edit the .env.example file to store all senestive information suchn as passwords, database credentials and etc.
+Copy and edit the .env.example file to store all sensitive information such as passwords, database credentials and etc.
 Make sure to edit the file name to `.env`.
 
 ## 5. Set Up PostgreSQL

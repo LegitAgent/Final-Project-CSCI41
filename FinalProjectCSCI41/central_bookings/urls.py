@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import(
-    index, ActivityListView, ActivityDetailView, EnlistedActivityListView, enlist_in_activity
+    index, ActivityListView, ActivityDetailView, enlist_in_activity
 )
 
 urlpatterns = [

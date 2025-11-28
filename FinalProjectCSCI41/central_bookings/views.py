@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView
@@ -12,31 +12,18 @@ def index(request):
     return render(request, 'index.html')
 
 class ActivityListView(ListView):
-    # show ALL activities, regardless of whether the user has enlisted in them
-
+    """Activity list view for activities."""
     model = Activity
     template_name = 'activitiesList.html'
 
 class ActivityDetailView(DetailView):
-    # show a particular activity and allow the user to enlist in it
-
+    """Activity detail view for activities."""
     model = Activity
     template_name = 'activityDetail.html'
 
-class EnlistedActivityListView(ListView):
-    # show the activities which the user has enlisted in
-    
-    pass
-
-    model = ActivityBooking
-
-    # need to do a little bit of logic here
-    # to ensure that only the user's enlisted activities show up
-
 def enlist_in_activity(request, activity_id):
-    # logic to enlist the user in the activity with id=activity_id
-
-    activity = Activity.objects.get(id=activity_id)
+    """Retrieves the activity from the database and saves it as enlisted for the user's request."""
+    activity = get_object_or_404(Activity, id=activity_id) # safer
     user = request.user
 
     if request.method == 'POST':
@@ -49,23 +36,27 @@ def enlist_in_activity(request, activity_id):
         return redirect('central_bookings:activities-list')
     
 def get_enlisted_activities_for_user(request):
+    """Gets all activies that the user is enlisted in, as well as all their reservations."""
     user = request.user
 
-    # prefetch reservations with their locations to avoid extra queries.
-    #seperate querysets for booking and reservation to optimize queries 
+    # prevents extra database queries when you later access r.location.name
     reservation_qs = Reservation.objects.select_related('location')
+    
     bookings_qs = (
         ActivityBooking.objects
         .filter(participant=user)
-        .select_related('participant', 'activity', 'activity__organizer') 
-        #joins the tables for quick access to related fields
-        .prefetch_related(Prefetch('activity__reservations', queryset=reservation_qs, to_attr='prefetched_reservations')) 
-        # prefetch reservations with locations for activities
-        # 1st args: fetch bookings 2nd args: fetch reservations related to activities in bookings 
-        # 3rd args: store prefetched reservations in 'prefetched_reservations' attribute
+        .select_related('participant', 'activity', 'activity__organizer') # avoids extra queries per booking.
+        .prefetch_related(
+            Prefetch(
+                'activity__reservations',
+                queryset=reservation_qs, to_attr='prefetched_reservations')
+            ) 
+        # prefetch reservations with locations for activities.
+        # 1st args: fetch bookings 2nd args: fetch reservations related to activities in bookings.
+        # 3rd args: store prefetched reservations in 'prefetched_reservations' attribute instead of .reservations.all().
     )
 
-    # build a list of results (one item per reservation if multiple reservations)
+    # build a list of results (one item per reservation if multiple reservations).
     enlisted = []
     for booking in bookings_qs:
         activity = booking.activity
@@ -74,8 +65,7 @@ def get_enlisted_activities_for_user(request):
 
         reservations = getattr(activity, 'prefetched_reservations', list(activity.reservations.all()))
         for r in reservations:
-            #dictionary to hold details of each enlisted activity per reservation
-            #its like having internal ctx inside the ctx dictionary
+            # dictionary to hold details of each enlisted activity per reservation
             enlisted.append({
                 'activity_name': activity.name,
                 'user_name': user_name,

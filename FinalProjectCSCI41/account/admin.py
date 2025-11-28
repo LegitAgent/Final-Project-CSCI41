@@ -3,8 +3,12 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import User 
 
 class UserAdmin(BaseUserAdmin):
+    """Customizes the admin interface for the custom User model.
+    (i.e. list_filter adds a filter for is_admin to the interface, etc.)"""
+    
     list_display = ('name', 'participant_type', 'department', 'birthdate', 'is_admin')
     list_filter = ('is_admin',)
+    
     fieldsets = (
         (None, {'fields': ('name', 'password')}),
         ('Personal info', {'fields': ('participant_type', 'department', 'birthdate')}),

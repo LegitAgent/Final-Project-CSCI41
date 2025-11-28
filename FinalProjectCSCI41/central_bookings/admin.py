@@ -3,7 +3,7 @@ from django.contrib import admin
 
 from .models import Organizer, Activity, Participant, ActivityBooking, Location, Reservation
 
-# set up the in-lines
+"""Putting all entities in the database as an inline for the admin"""
 
 class ActivityInLine(admin.TabularInline):
     model = Activity
@@ -19,9 +19,10 @@ class LocationInLine(admin.TabularInline):
 
 class ReservationInLine(admin.TabularInline):
     model = Reservation
-    
+    extra = 1
 
-# set up the actual admins
+    
+"""List all entities categorized by their corresponding models."""
 
 class OrganizerAdmin(admin.ModelAdmin):
     model = Organizer
@@ -40,6 +41,8 @@ class LocationAdmin(admin.ModelAdmin):
 
 class ReservationAdmin(admin.ModelAdmin):
     model = Reservation
+
+"""Register all classes."""
 
 admin.site.register(Activity, ActivityAdmin)
 admin.site.register(Organizer, OrganizerAdmin)

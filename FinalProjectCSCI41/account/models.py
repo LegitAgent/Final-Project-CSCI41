@@ -3,14 +3,18 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 # Create your models here.
 class BaseModel(models.Model):
+    """Creates timestamps for all models who inherit it."""
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        """Metadata for the model."""
         abstract = True
 
 class UserManager(BaseUserManager):
+    """Manages the creation of regular (normal) users and super (admin) users."""
     def create_user(self, name, participant_type, department, birthdate, password=None):
+        """Creates and saves a regular user given the specific arguments."""
         if not name:
             raise ValueError('Users must have a name')
         user = self.model(
@@ -24,6 +28,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, name, participant_type, department, birthdate, password):
+        """Creates and saves a super user given the specific arguments."""
         user = self.create_user(
             name=name,
             participant_type=participant_type,
@@ -39,7 +44,7 @@ class UserManager(BaseUserManager):
         return user
 
 class User(AbstractBaseUser, PermissionsMixin,BaseModel):
-
+    """Extends Django's user model by including additional fields like participant_types, department, birthdate, and etc."""
     PARTICIPANT_TYPES = {
         'Student': 'Student',
         'Faculty': 'Faculty',
@@ -57,8 +62,9 @@ class User(AbstractBaseUser, PermissionsMixin,BaseModel):
     USERNAME_FIELD = 'name'
     REQUIRED_FIELDS = ['participant_type', 'department', 'birthdate']
 
-    objects = UserManager()
+    objects = UserManager() # attatch custom manager.
 
     def __str__(self):
+        """Displays name in admin/shell."""
         return self.name
 
