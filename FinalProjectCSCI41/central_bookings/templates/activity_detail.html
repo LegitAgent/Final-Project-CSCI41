@@ -3,6 +3,7 @@
 {% block title %}Central Bookings{% endblock %}
 
 {% block content %}
+  <main>
     <h2> 
         {{object.name}} - {{object.id}}
     </h2>
@@ -24,5 +25,5 @@
     <button type="submit">
         <p><a href="{% url 'central_bookings:activity-list' %}">{{"Back to full activity list"}}</a></p>
     </button>
-
+  </main>
 {% endblock %}

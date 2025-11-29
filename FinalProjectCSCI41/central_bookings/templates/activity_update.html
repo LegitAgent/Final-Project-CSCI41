@@ -3,12 +3,12 @@
 {% block title %}Central Bookings{% endblock %}
 
 {% block content %}
-
+  <main>
     <h1>{% if object %}Edit{% else %}Add{% endif %} Activity</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Save</button>
     </form>
-
+    </main>
 {% endblock %}
