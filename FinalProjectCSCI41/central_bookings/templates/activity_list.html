@@ -75,7 +75,7 @@
             </i>
             <span>Edit Activity</span>
           </a>
-        {% elif reservation.activity.pk in my_bookings %}
+        {% elif reservation.id in my_bookings %}
           <button class="btn btn-outline btn-secondary w-100 mt-8" disabled>Already Enlisted</button>
         {% else %}
           <form method="POST" action="{% url 'central_bookings:enlist' reservation.id %}" class="flex-grow-1 mt-8 mb-0">
