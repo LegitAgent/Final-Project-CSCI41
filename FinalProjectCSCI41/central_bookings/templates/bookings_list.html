@@ -1,31 +1,74 @@
 {% extends 'base.html' %}
 
-{% block title %}Bookings of Participant {{ profile.user.first_name }}{% endblock %}
-
 {% block content %}
+    
+<main class="pt-8 px-12">
+  <ol class="breadcrumb breadcrumb-arrow text-muted fs-6 fw-bold mb-4">
+    <li class="breadcrumb-item"><i class="ki-duotone ki-home"></i></li>
+    <li class="breadcrumb-item text-gray-700">Activity Bookings</li>
+  </ol>
 
-<main>
+  <header class="d-flex flex-row justify-content-between mb-12">
+    <!-- Left -->
+    <div>
+      <h2 class="mb-1">Activity Bookings</h2>
+      <span class="text-gray-600 fs-6 fw-semibold">Showing all activities booked by {{ profile.user.first_name }}.</span>
+    </div>
+
+    <!-- Right -->
+  </header>
+
+  <section class="d-flex gap-8">
     {% if enlisted_activities %}
         {% for item in enlisted_activities %}
-            <a href="{{item.activity_url}}">{{item.activity_name}}</a>
-            <br>Organized by {{ item.organizer }}
-            <br>Location: {{ item.location }}
-            <br>User {{ item.user_name }}
-            <br>Date: {{ item.date }}
-            <br>Start Time: {{ item.start_time }} | End Time: {{ item.end_time }}
-            <br>
-            {% if item.attended %}
-                You have attended this activity.
-            {% else %}
-                <form method="post">
-                    {% csrf_token %}
+            <article class="card shadow-sm w-md-400px p-8">
+                <h3 class="mb-1"><a href="{{item.activity_url}}">{{item.activity_name}}</a></h3>
+                <span class="text-gray-600 fw-bold">{{ item.organizer }}</span>
+                <div class="mt-8 d-flex flex-column gap-2">
+                    <span class="d-flex align-items-center gap-2 fw-bold text-primary">
+                    <i class="ki-duotone ki-profile-user fs-2 text-primary">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                    </i>
+                    <span class="fs-6 py-1">Available Slots: {{ reservation.location.maximum_capacity }}</span>
+                    </span>
+                    <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
+                    <i class="ki-duotone ki-geolocation fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <span class="fs-6 py-1"> {{ item.location }}</span>
+                    </span>
+                    <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
+                    <i class="ki-duotone ki-calendar fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <span class="fs-6 py-1"> {{ item.date }} </span>
+                    </span>
+                    <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
+                    <i class="ki-duotone ki-time fs-2">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                    </i>
+                    <span class="fs-6 py-1">{{ item.start_time }} - {{ item.end_time }}</span>
+                    </span>
+                </div>
+                {% if item.attended %}
+                    <button class="btn btn-outline btn-secondary w-100 mt-8" disabled>Attended</button>
+                {% else %}
+                    <form method="POST" class="flex-grow-1 mt-8 mb-0">
+                        {% csrf_token %}
                         <input type="hidden" name = "activity_pk" value = "{{ item.activity_pk }}">
-                        <input type="submit" name ="attendance_check_button" value="Mark as attended">
-                </form>
-            {% endif %}
+                        <button class="btn btn-primary w-100" type="submit" name ="attendance_check_button" value="Mark as attended">Mark as Attended</button>
+                    </form>
+                {% endif %}
+            </article>
         {% endfor %}
-    {% else %}
-        <p>No enlisted activities found.</p>
     {% endif %}
+  </section>
 </main>
+
 {% endblock %}
