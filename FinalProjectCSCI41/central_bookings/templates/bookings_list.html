@@ -6,34 +6,24 @@
 
 <main>
     {% if enlisted_activities %}
-    <table>
-        <thead>
-            <tr>
-                <th>Activity Name</th>
-                <th>User</th>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-                <th>Location</th>
-                <th>Organizer</th>
-                <th>Attended?</th>
-            </tr>
-        </thead>
-        <tbody>
         {% for item in enlisted_activities %}
-            <tr>
-                <td>{{ item.activity_name }}</td>
-                <td>{{ item.user_name }}</td>
-                <td>{{ item.date }}</td>
-                <td>{{ item.start_time }}</td>
-                <td>{{ item.end_time }}</td>
-                <td>{{ item.location }}</td>
-                <td>{{ item.organizer }}</td>
-                <td>{{ item.attended|yesno:"Yes,No" }}</td>
-            </tr>
+            <a href="{{item.activity_url}}">{{item.activity_name}}</a>
+            <br>Organized by {{ item.organizer }}
+            <br>Location: {{ item.location }}
+            <br>User {{ item.user_name }}
+            <br>Date: {{ item.date }}
+            <br>Start Time: {{ item.start_time }} | End Time: {{ item.end_time }}
+            <br>
+            {% if item.attended %}
+                You have attended this activity.
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                        <input type="hidden" name = "activity_pk" value = "{{ item.activity_pk }}">
+                        <input type="submit" name ="attendance_check_button" value="Mark as attended">
+                </form>
+            {% endif %}
         {% endfor %}
-        </tbody>
-    </table>
     {% else %}
         <p>No enlisted activities found.</p>
     {% endif %}

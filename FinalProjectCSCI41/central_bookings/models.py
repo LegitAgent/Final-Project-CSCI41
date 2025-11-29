@@ -64,6 +64,10 @@ class ActivityBooking(models.Model):
                                     related_name='activity_bookings')
     attended = models.BooleanField(default=False)
 
+    def mark_attended(self):
+        """Mark an activity as attended"""
+        self.attended = True
+
     class Meta:
         """Metadata for the model"""
         

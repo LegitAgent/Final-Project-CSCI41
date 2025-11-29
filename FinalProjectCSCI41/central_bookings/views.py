@@ -5,6 +5,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db import connection
 from django.db.models import Prefetch
 from django.urls import reverse_lazy
+from django.urls import reverse
+
 
 from .forms import ActivityForm
 from .models import Activity, ActivityBooking, Reservation
@@ -63,7 +65,7 @@ def enlist_in_activity(request, activity_id):
     
 def get_enlisted_activities_for_user(request):
     """Gets all activies that the user is enlisted in, as well as all their reservations."""
-    
+
     user = request.user.participant
 
     # prevents extra database queries when you later access r.location.name
@@ -102,7 +104,17 @@ def get_enlisted_activities_for_user(request):
                 'end_time': r.end_time,
                 'location': r.location.name if r.location else None,
                 'organizer': organizer_name,
+                'activity_url': activity.get_absolute_url,
+                'activity_pk': booking.pk
             })
+        
+        # If the user marks an activity as attended
+        # update the model isntance accordingly. 
+        if (request.method=="POST" and "attendance_check_button" in request.POST):
+            attended_booking = ActivityBooking.objects.get(pk=int(request.POST.get('activity_pk')))
+            attended_booking.mark_attended()
+            attended_booking.save()
+            return redirect(reverse('central_bookings:bookings'))
 
     ctx = {'enlisted_activities': enlisted, 'profile': user}
     return render(request, 'bookings_list.html', ctx)
