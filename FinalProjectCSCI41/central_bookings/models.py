@@ -50,6 +50,23 @@ class ActivityBooking(models.Model):
         verbose_name = 'Activity Booking'
 
 
+class Location(models.Model):
+    """A model that represents the Location Entity."""
+    
+    name = models.CharField(max_length=255)
+    maximum_capacity = models.IntegerField(default=1)
+
+    def __str__(self):
+        """Returns the name of the model."""
+        
+        return self.name
+
+    class Meta:
+        """Metadata for the model."""
+        
+        verbose_name = 'Location'
+
+
 class Reservation(models.Model):
     """A model that represents the Reservation Entity."""
     
