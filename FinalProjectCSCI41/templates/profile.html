@@ -3,10 +3,11 @@
 <title>{% block title %}Central Bookings{% endblock %}</title>
 
 {% block content %}
-    <h1>User Profile: {{ profile.name }}</h1>
+<main>
+    <h1>User Profile: {{ profile.user.first_name }}</h1>
 
     <ul>
-        <li>Username: {{ profile.name }}</li>
+        <!-- <li>Username: {{ profile.user.first_name }}</li> -->
         <li>Participant type: {{ profile.participant_type }}</li>
         <li>Department: {{ profile.department }}</li>
         <li>Birthdate: {{ profile.birthdate }}</li>
@@ -46,4 +47,5 @@
     {% else %}
         <p>No enlisted activities found.</p>
     {% endif %}
+</main>
 {% endblock %}

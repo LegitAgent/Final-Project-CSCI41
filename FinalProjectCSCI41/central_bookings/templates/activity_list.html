@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Central Bookings{% endblock %}
+
+{% block content %}
+    
+<main class="pt-8 px-12">
+  <ol class="breadcrumb breadcrumb-arrow text-muted fs-6 fw-bold mb-4">
+    <li class="breadcrumb-item"><i class="ki-duotone ki-home"></i></li>
+    <li class="breadcrumb-item text-gray-700">Activities</li>
+  </ol>
+
+  <header class="d-flex flex-row justify-content-between mb-12">
+    <!-- Left -->
+    <div>
+      <h2 class="mb-1">Activities</h2>
+      <span class="text-gray-600 fs-6 fw-semibold">Showing all activities.</span>
+    </div>
+
+    <!-- Right -->
+    {% if request.user.is_authenticated and user_type == 'organizer' %}
+      <a href="{% url 'central_bookings:activity-add' %}" class="btn btn-primary my-auto">
+        <i class="ki-duotone ki-plus-square fs-2">
+          <span class="path1"></span>
+          <span class="path2"></span>
+          <span class="path3"></span>
+        </i>
+        <span>Add Activity</span>
+      </a>
+    {% endif %}
+  </header>
+
+  <section class="d-flex gap-8">
+    {% for reservation in object_list %}
+      <article class="card shadow-sm w-md-400px p-8">
+        <h3 class="mb-1">{{ reservation.activity.name }}</h3>
+        <span class="text-gray-600 fw-bold">{{ reservation.activity.organizer.user.first_name }}</span>
+        <div class="mt-8 d-flex flex-column gap-2">
+          <span class="d-flex align-items-center gap-2 fw-bold text-primary">
+            <i class="ki-duotone ki-profile-user fs-2 text-primary">
+              <span class="path1"></span>
+              <span class="path2"></span>
+              <span class="path3"></span>
+              <span class="path4"></span>
+            </i>
+            <span class="fs-6 py-1">Available Slots: {{ reservation.location.maximum_capacity }}</span>
+          </span>
+          <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
+            <i class="ki-duotone ki-geolocation fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            <span class="fs-6 py-1">{{ reservation.location }}</span>
+          </span>
+          <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
+            <i class="ki-duotone ki-calendar fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            <span class="fs-6 py-1">{{ reservation.date|date:"F j, Y" }}</span>
+          </span>
+          <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
+            <i class="ki-duotone ki-time fs-2">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            <span class="fs-6 py-1">{{ reservation.start_time }} - {{ reservation.end_time }}</span>
+          </span>
+        </div>
+        {% if user_type == "organizer" %}
+          <a href="{% url 'central_bookings:activity-edit' reservation.activity.pk %}" class="btn btn-icon btn-primary w-100 mt-8">
+            <i class="ki-duotone ki-pencil fs-3 me-3">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
+            <span>Edit Activity</span>
+          </a>
+        {% elif reservation.id in my_bookings %}
+          <button class="btn btn-outline btn-secondary w-100 mt-8" disabled>Already Enlisted</button>
+        {% else %}
+          {% if user.is_authenticated%}
+            <form method="POST" action="{% url 'central_bookings:enlist' reservation.id %}" class="flex-grow-1 mt-8 mb-0">
+              {% csrf_token %}
+              <button class="btn btn-primary w-100" type="submit">Enlist in Activity</button>
+            </form>
+          {% else %}
+            <a href="/account/login/" class="btn btn-primary w-100 mt-8">Enlist in Activity</a>
+          {% endif %}
+        {% endif %}
+      </article>
+    {% endfor %}
+  </section>
+</main>
+
+{% endblock %}

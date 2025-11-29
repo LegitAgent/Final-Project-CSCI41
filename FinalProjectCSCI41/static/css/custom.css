@@ -1,0 +1,40 @@
+:root {
+  --bg-colour: #F9F9F9;
+}
+
+.text-poppins {
+  font-family: 'Poppins', 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-colour);
+}
+
+button {
+  -webkit-appearance: none;
+  border-radius: 0;
+  text-align: inherit;
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  border: none;
+  color: inherit;
+  font: inherit;
+}
+
+span.nav-hover-pill {
+  transition: transform 0.2s cubic-bezier(.4, 0, .2, 1),
+  width 0.2s ease;
+}
+
+main {
+  margin-top: 72px;
+}
+
+.breadcrumb-arrow .breadcrumb-item::after {
+  font-family: FontAwesome;
+  padding-left: .5rem;
+  content: "\f105";
+  font-size: 0.75rem;
+}

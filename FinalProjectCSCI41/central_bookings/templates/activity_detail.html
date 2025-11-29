@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-<title>{% block title %}Central Bookings{% endblock %}</title>
+{% block title %}Central Bookings{% endblock %}
 
 {% block content %}
+  <main>
     <h2> 
         {{object.name}} - {{object.id}}
     </h2>
@@ -17,10 +18,12 @@
             <button type="submit">Enlist in Activity</button>
         </form>
     {% endfor %}
-
+    
     <br><br><hr><br>
+    <a href="{% url 'central_bookings:activity-edit' activity.pk %}">Edit</a>
+    <a href="{% url 'central_bookings:activity-delete' activity.pk %}">Delete</a>
     <button type="submit">
-        <p><a href="{% url 'central_bookings:activities-list' %}">{{"Back to full activity list"}}</a></p>
+        <p><a href="{% url 'central_bookings:activity-list' %}">{{"Back to full activity list"}}</a></p>
     </button>
-
+  </main>
 {% endblock %}
