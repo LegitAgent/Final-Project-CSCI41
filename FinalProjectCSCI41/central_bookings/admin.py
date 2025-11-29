@@ -35,6 +35,9 @@ class ActivityAdmin(admin.ModelAdmin):
 class ParticipantAdmin(admin.ModelAdmin):
     model = Participant
 
+class ActivityBookingAdmin(admin.ModelAdmin):
+    model = ActivityBooking
+
 class LocationAdmin(admin.ModelAdmin):
     model = Location
     inlines = [ReservationInLine]
@@ -45,6 +48,7 @@ class ReservationAdmin(admin.ModelAdmin):
 """Register all classes."""
 
 admin.site.register(Activity, ActivityAdmin)
+admin.site.register(ActivityBooking, ActivityBookingAdmin)
 admin.site.register(Organizer, OrganizerAdmin)
 admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Location, LocationAdmin)

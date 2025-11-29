@@ -25,7 +25,6 @@ class Activity(models.Model):
     """A model that represents the Activity Entity."""
     name = models.CharField(max_length=255)
     expected_participants = models.IntegerField()
-
     organizer = models.ForeignKey(Organizer,
                                   null=True,
                                   on_delete=models.SET_NULL,
@@ -63,15 +62,18 @@ class ActivityBooking(models.Model):
 
     class Meta:
         """Metadata for the model"""
-        
         verbose_name = 'Activity Booking'
+    
+    def __str__(self):
+        """Returns the name of the model."""
+        return f"{self.activity.name} - {self.participant} (Attended: {self.attended})"
 
 class Reservation(models.Model):
     """A model that represents the Reservation Entity."""
     
     date = models.DateField(null=False, default='2000-01-01')
-    start_time = models.DateTimeField(null=True)
-    end_time = models.DateTimeField(null=True)
+    start_time = models.TimeField(null=True)
+    end_time = models.TimeField(null=True)
 
     location = models.ForeignKey(Location,
                                  null=False,

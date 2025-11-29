@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.db import connection
 from django.db.models import Prefetch
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+
 
 from .forms import ActivityForm
 from .models import Activity, ActivityBooking, Reservation
@@ -15,8 +16,23 @@ def index(request):
 
 class ActivityListView(ListView):
     """Activity list view for activities."""
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if (hasattr(self.request.user, 'organizer')):
+            context["user_type"] = 'organizer'
+        else:
+            my_bookings = ActivityBooking.objects.filter(
+                participant=self.request.user.participant)
+            my_bookings = [booking.activity.pk for booking in my_bookings]
+            print(my_bookings)
+            context["user_type"] = 'participant'
+            context["my_bookings"] = my_bookings
+        
+
+        return context
     
-    model = Activity
+    model = Reservation
     template_name = 'activity_list.html'
 
 class ActivityDetailView(DetailView):
@@ -25,13 +41,34 @@ class ActivityDetailView(DetailView):
     model = Activity
     template_name = 'activity_detail.html'
 
-class ActivityCreateView(CreateView):
+@login_required
+def activity_create(request):
     """Activity create view for activities."""
+
+    if request.method == "POST":
+        form = ActivityForm(request.POST)
+
+        if form.is_valid():
+            activity = Activity()
+            activity.name = request.POST.get("name")
+            activity.organizer = request.user.organizer
+            activity.expected_participants = request.POST.get("expected_participants")
+            activity.save()
+
+            return redirect('central_bookings:activity-list')
+        else:
+            print(form.errors.as_data())
+
+    else:
+        form = ActivityForm()
+
+    ctx = {
+        "form": form
+    }
+
+    return render(request, 'activity_add.html', ctx)
     
-    model = Activity
-    form_class = ActivityForm
-    template_name = 'activity_add.html'
-    
+
 class ActivityUpdateView(UpdateView):
     """Activity update view for activities."""
     
