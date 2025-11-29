@@ -30,9 +30,6 @@ class Activity(models.Model):
                                   null=True,
                                   on_delete=models.SET_NULL,
                                   related_name='activities')
-    location = models.ForeignKey(Location,
-                                 null=False,
-                                 on_delete=models.CASCADE)
 
     def __str__(self):
         """Returns the name of the model."""

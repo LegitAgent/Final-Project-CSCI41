@@ -7,11 +7,12 @@ class Organizer(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     address = models.TextField()
 
-    ORGANIZER_TYPES = {
-        'Internal': 'Internal',
-        'External': 'External'
-    }
-    organizer_type = models.CharField(choices=ORGANIZER_TYPES)
+    ORGANIZER_TYPES = [
+        ('Internal', 'Internal'),
+        ('External', 'External'),
+    ]
+
+    organizer_type = models.CharField(max_length=20, choices=ORGANIZER_TYPES)
     contact_name = models.CharField(max_length=255)
     contact_email = models.CharField(max_length=255)
     contact_number = models.CharField(max_length=24)

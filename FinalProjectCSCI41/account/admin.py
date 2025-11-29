@@ -25,7 +25,6 @@ from .models import Organizer
 #     ordering = ('name',)
 #     filter_horizontal = ()
 
-
 class OrganizerInline(admin.StackedInline):
     model = Organizer
     can_delete = False
@@ -33,7 +32,6 @@ class OrganizerInline(admin.StackedInline):
 
 class UserAdmin(BaseUserAdmin):
     inlines = [OrganizerInline]
-
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
