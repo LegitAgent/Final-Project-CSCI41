@@ -50,7 +50,7 @@ def enlist_in_activity(request, activity_id):
     """Retrieves the activity from the database and saves it as enlisted for the user's request."""
     
     activity = get_object_or_404(Activity, id=activity_id) # safer
-    user = request.user
+    user = request.user.participant
 
     if request.method == 'POST':
         booking = ActivityBooking.objects.create(
@@ -59,7 +59,7 @@ def enlist_in_activity(request, activity_id):
             attended = False
         )
         booking.save()
-        return redirect('central_bookings:activities-list')
+        return redirect('central_bookings:activity-list')
     
 def get_enlisted_activities_for_user(request):
     """Gets all activies that the user is enlisted in, as well as all their reservations."""
