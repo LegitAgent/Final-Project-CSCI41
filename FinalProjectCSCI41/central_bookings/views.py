@@ -64,7 +64,7 @@ def enlist_in_activity(request, activity_id):
 def get_enlisted_activities_for_user(request):
     """Gets all activies that the user is enlisted in, as well as all their reservations."""
     
-    user = request.user
+    user = request.user.participant
 
     # prevents extra database queries when you later access r.location.name
     reservation_qs = Reservation.objects.select_related('location')
@@ -87,8 +87,8 @@ def get_enlisted_activities_for_user(request):
     enlisted = []
     for booking in bookings_qs:
         activity = booking.activity
-        organizer_name = activity.organizer.name 
-        user_name = booking.participant.name
+        organizer_name = activity.organizer.user.first_name
+        user_name = booking.participant.user.first_name
 
         reservations = getattr(activity, 'prefetched_reservations', list(activity.reservations.all()))
         for r in reservations:
