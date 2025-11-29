@@ -59,6 +59,7 @@ def register_participant(request):
             participant.user = user
             participant.participant_type = request.POST.get("participant_type")
             participant.birthdate = request.POST.get("birthdate")
+            participant.department = request.POST.get("department")
             participant.save()
             return redirect("/account/login/")
     else:
