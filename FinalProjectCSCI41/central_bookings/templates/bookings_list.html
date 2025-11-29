@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Bookings of Participant {{ profile.user.first_name }}{% endblock %}
+
+{% block content %}
+
+<main>
+    {% if enlisted_activities %}
+        {% for item in enlisted_activities %}
+            <a href="{{item.activity_url}}">{{item.activity_name}}</a>
+            <br>Organized by {{ item.organizer }}
+            <br>Location: {{ item.location }}
+            <br>User {{ item.user_name }}
+            <br>Date: {{ item.date }}
+            <br>Start Time: {{ item.start_time }} | End Time: {{ item.end_time }}
+            <br>
+            {% if item.attended %}
+                You have attended this activity.
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                        <input type="hidden" name = "activity_pk" value = "{{ item.activity_pk }}">
+                        <input type="submit" name ="attendance_check_button" value="Mark as attended">
+                </form>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No enlisted activities found.</p>
+    {% endif %}
+</main>
+{% endblock %}
