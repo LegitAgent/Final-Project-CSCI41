@@ -105,6 +105,5 @@ def get_enlisted_activities_for_user(request):
             })
 
     ctx = {'enlisted_activities': enlisted, 'profile': user}
-    return render(request, 'profile.html', ctx)
-
-
+    return render(request, 'bookings_list.html', ctx)
+    # return render(request, 'profile.html', ctx)

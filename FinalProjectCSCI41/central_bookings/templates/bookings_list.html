@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Bookings of Participant {{ profile.user.first_name }}{% endblock %}
+
+{% block content %}
+
+<main>
+    {% if enlisted_activities %}
+    <table>
+        <thead>
+            <tr>
+                <th>Activity Name</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Location</th>
+                <th>Organizer</th>
+                <th>Attended?</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for item in enlisted_activities %}
+            <tr>
+                <td>{{ item.activity_name }}</td>
+                <td>{{ item.user_name }}</td>
+                <td>{{ item.date }}</td>
+                <td>{{ item.start_time }}</td>
+                <td>{{ item.end_time }}</td>
+                <td>{{ item.location }}</td>
+                <td>{{ item.organizer }}</td>
+                <td>{{ item.attended|yesno:"Yes,No" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No enlisted activities found.</p>
+    {% endif %}
+</main>
+{% endblock %}
