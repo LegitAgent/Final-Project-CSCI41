@@ -4,6 +4,23 @@ from account.models import Organizer, Participant
 from django.urls import reverse
 
 """Provides the entities necessary for the database."""
+class Location(models.Model):
+    """A model that represents the Location Entity."""
+
+    name = models.CharField(max_length=255)
+    maximum_capacity = models.IntegerField(default=1)
+
+    def __str__(self):
+        """Returns the name of the model."""
+
+        return self.name
+
+    class Meta:
+        """Metadata for the model."""
+
+        verbose_name = 'Location'
+
+
 class Activity(models.Model):
     """A model that represents the Activity Entity."""
     name = models.CharField(max_length=255)
@@ -51,24 +68,6 @@ class ActivityBooking(models.Model):
         """Metadata for the model"""
         
         verbose_name = 'Activity Booking'
-
-
-class Location(models.Model):
-    """A model that represents the Location Entity."""
-    
-    name = models.CharField(max_length=255)
-    maximum_capacity = models.IntegerField(default=1)
-
-    def __str__(self):
-        """Returns the name of the model."""
-        
-        return self.name
-
-    class Meta:
-        """Metadata for the model."""
-        
-        verbose_name = 'Location'
-
 
 class Reservation(models.Model):
     """A model that represents the Reservation Entity."""
