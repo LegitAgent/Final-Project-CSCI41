@@ -1,11 +1,12 @@
 from django.urls import path
+from django.views.generic.base import RedirectView
 from .views import(
     index, ActivityListView, ActivityDetailView, ActivityUpdateView, ActivityDeleteView, activity_create, 
     enlist_in_activity, get_enlisted_activities_for_user
 )
 
 urlpatterns = [
-    path('', index, name="index"),
+    path('', RedirectView.as_view(url='/activities/', permanent=False)),
     path('activities/', ActivityListView.as_view(), name='activity-list'),
     path('activities/<int:pk>/', ActivityDetailView.as_view(), name='activity-detail'),
     path('activities/add/', activity_create, name='activity-add'),

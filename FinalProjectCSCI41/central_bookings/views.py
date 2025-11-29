@@ -22,14 +22,14 @@ class ActivityListView(ListView):
         context = super().get_context_data(**kwargs)
         if (hasattr(self.request.user, 'organizer')):
             context["user_type"] = 'organizer'
-        else:
-            my_bookings = ActivityBooking.objects.filter(
-                participant=self.request.user.participant)
+        elif (hasattr(self.request.user, 'participant')):
+            my_bookings = ActivityBooking.objects.filter(participant=self.request.user.participant)
             my_bookings = [booking.activity.pk for booking in my_bookings]
             print(my_bookings)
             context["user_type"] = 'participant'
             context["my_bookings"] = my_bookings
-        
+        else:
+            pass
 
         return context
     

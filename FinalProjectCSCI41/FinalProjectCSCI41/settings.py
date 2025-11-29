@@ -130,8 +130,8 @@ STATICFILES_DIRS = [
     BASE_DIR/'static'
 ]
 
-LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/account/login/'
+LOGIN_REDIRECT_URL = '/activities/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

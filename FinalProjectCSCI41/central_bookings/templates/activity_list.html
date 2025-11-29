@@ -78,10 +78,14 @@
         {% elif reservation.id in my_bookings %}
           <button class="btn btn-outline btn-secondary w-100 mt-8" disabled>Already Enlisted</button>
         {% else %}
-          <form method="POST" action="{% url 'central_bookings:enlist' reservation.id %}" class="flex-grow-1 mt-8 mb-0">
-            {% csrf_token %}
-            <button class="btn btn-primary w-100" type="submit">Enlist in Activity</button>
-          </form>
+          {% if user.is_authenticated%}
+            <form method="POST" action="{% url 'central_bookings:enlist' reservation.id %}" class="flex-grow-1 mt-8 mb-0">
+              {% csrf_token %}
+              <button class="btn btn-primary w-100" type="submit">Enlist in Activity</button>
+            </form>
+          {% else %}
+            <a href="/account/login/" class="btn btn-primary w-100 mt-8">Enlist in Activity</a>
+          {% endif %}
         {% endif %}
       </article>
     {% endfor %}
