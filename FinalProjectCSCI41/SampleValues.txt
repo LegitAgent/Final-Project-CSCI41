@@ -1,0 +1,44 @@
+SELECT QUERIES of LISTED activities 
+
+Gets Activity of user 
+SELECT central_bookings_activity.name, 
+account_user.name, 
+central_bookings_reservation.date, 
+central_bookings_reservation.start_time, 
+central_bookings_reservation.end_time, 
+central_bookings_location.name, 
+central_bookings_organizer.name, 
+central_bookings_activitybooking.attended
+FROM central_bookings_activity,
+central_bookings_activitybooking, 
+account_user, central_bookings_reservation, 
+central_bookings_location, 
+central_bookings_organizer
+WHERE 
+central_bookings_activity.id = central_bookings_activitybooking.activity_id 
+AND account_user.id = central_bookings_activitybooking.participant_id 
+AND central_bookings_reservation.activity_id = central_bookings_activity.id
+AND central_bookings_location.id = central_bookings_reservation.location_id
+AND central_bookings_organizer.id = central_bookings_activity.organizer_id;
+
+
+
+INSERT values
+
+INSERT INTO central_bookings_participant (id, name, participant_type, department, birthdate)
+VALUES (235191, 'Uriel', 'Student', 'JGSOM', '2003-07-28');
+
+INSER INTO central_bookings_participant (id, name, participant_type, department, birthdate)
+VALUES (230995, 'Moira', 'Student', 'Computer Science', '2005-01-03');
+
+INSERT INTO central_bookings_organizer (name, address, organizer_type, contact_name, contact_email, contact_number)
+VALUES ('Smith Publishing', '73rd st, Brgy Talon Dos, Las Pinas, Metro Manila', 'External', 'Macky Z. Gonzales', 'macky.gonzales@smithpubs.com', '231-223-551');
+
+INSERT INTO central_bookings_location 
+VALUES (10534, 'Pridehall Theater', 300);
+
+INSERT INTO central_bookings_activity
+VALUES (12345, 'Wordsmithing and Writing in the Modern Era', 1);
+
+INSERT INTO central_bookings_reservation 
+VALUES (101501, '2024-11-7 9:00:00', '2024-11-7 11:00:00', 12345, 10534, '2024-11-7');

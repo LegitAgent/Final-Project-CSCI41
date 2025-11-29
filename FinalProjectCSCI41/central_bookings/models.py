@@ -40,7 +40,7 @@ class Activity(models.Model):
 
     def get_absolute_url(self):
         """Returns the URL for the activity page."""
-        return reverse('central_bookings:activity', args=[str(self.pk)])
+        return reverse('central_bookings:activity-detail', args=[str(self.pk)])
     
     def get_reservations(self):
         """Returns all reservation associated with the activity."""

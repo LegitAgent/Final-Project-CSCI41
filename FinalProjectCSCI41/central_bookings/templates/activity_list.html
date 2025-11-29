@@ -3,6 +3,8 @@
 {% block title %}Central Bookings{% endblock %}
 
 {% block content %}
+    
+<main>
     <h1> 
         Activities List:
     </h1>
@@ -14,4 +16,6 @@
         {% endfor %}
     </ul>
     <a href="{% url 'central_bookings:activity-add' %}">Add Activity</a>
+</main>
+
 {% endblock %}
