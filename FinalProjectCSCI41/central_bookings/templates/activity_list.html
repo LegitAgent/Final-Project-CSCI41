@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-<title>{% block title %}Central Bookings{% endblock %}</title>
+{% block title %}Central Bookings{% endblock %}
 
 {% block content %}
     <h1> 
@@ -13,4 +13,5 @@
             </li>
         {% endfor %}
     </ul>
+    <a href="{% url 'central_bookings:activity-add' %}">Add Activity</a>
 {% endblock %}

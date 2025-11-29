@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Central Bookings{% endblock %}
+
+{% block content %}
+    <h1>Delete {{ object.name }}?</h1>
+    <form method="post">{% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'central_bookings:activity-list' %}">Cancel</a>
+{% endblock %}

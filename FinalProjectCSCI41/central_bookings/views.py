@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db import connection
 from django.db.models import Prefetch
+from django.urls import reverse_lazy
 
+from .forms import ActivityForm
 from .models import Activity, ActivityBooking, Reservation
 
 # Create your views here.
@@ -13,16 +15,40 @@ def index(request):
 
 class ActivityListView(ListView):
     """Activity list view for activities."""
+    
     model = Activity
-    template_name = 'activitiesList.html'
+    template_name = 'activity_list.html'
 
 class ActivityDetailView(DetailView):
     """Activity detail view for activities."""
+    
     model = Activity
-    template_name = 'activityDetail.html'
+    template_name = 'activity_detail.html'
+
+class ActivityCreateView(CreateView):
+    """Activity create view for activities."""
+    
+    model = Activity
+    form_class = ActivityForm
+    template_name = 'activity_add.html'
+    
+class ActivityUpdateView(UpdateView):
+    """Activity update view for activities."""
+    
+    model = Activity
+    form_class = ActivityForm
+    template_name = 'activity_update.html'
+    
+class ActivityDeleteView(DeleteView):
+    """Activity delete view for activities."""
+    
+    model = Activity
+    template_name = 'activity_delete.html'
+    success_url = reverse_lazy('central_bookings:activity-list') # from urls.py list
 
 def enlist_in_activity(request, activity_id):
     """Retrieves the activity from the database and saves it as enlisted for the user's request."""
+    
     activity = get_object_or_404(Activity, id=activity_id) # safer
     user = request.user
 
@@ -37,6 +63,7 @@ def enlist_in_activity(request, activity_id):
     
 def get_enlisted_activities_for_user(request):
     """Gets all activies that the user is enlisted in, as well as all their reservations."""
+    
     user = request.user
 
     # prevents extra database queries when you later access r.location.name
