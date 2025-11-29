@@ -36,7 +36,6 @@ class Participant(models.Model):
         """Returns the name of the model."""
         return self.user.first_name
 
-
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     participant_type = models.CharField(choices=PARTICIPANT_TYPES)
     department = models.CharField(max_length=255)
