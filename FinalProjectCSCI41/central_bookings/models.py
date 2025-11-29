@@ -1,32 +1,9 @@
 from django.db import models
-from account.models import User
+from django.contrib.auth.models import User
+from account.models import Organizer, Participant
 from django.urls import reverse
 
 """Provides the entities necessary for the database."""
-
-class Organizer(models.Model):
-    """A model that represents the Organizer Entity."""
-    name = models.CharField(max_length=255)
-    address = models.TextField()
-    
-    ORGANIZER_TYPES = {
-        'Internal': 'Internal',
-        'External': 'External'
-    }
-    organizer_type = models.CharField(choices=ORGANIZER_TYPES)
-
-    contact_name = models.CharField(max_length=255)
-    contact_email = models.CharField(max_length=255)
-    contact_number = models.CharField(max_length=24)
-
-    def __str__(self):
-        """Returns the name of the model."""
-        return self.name
-    
-    class Meta:
-        """Metadata for the model."""
-        verbose_name = 'Organizer'
-
 class Activity(models.Model):
     """A model that represents the Activity Entity."""
     name = models.CharField(max_length=255)
@@ -54,34 +31,13 @@ class Activity(models.Model):
         verbose_name = 'Activity'
         verbose_name_plural = 'Activities'
 
-class Participant(models.Model):
-    """A model that represents the Participant Entity."""
-    PARTICIPANT_TYPES = {
-        'Student': 'Student',
-        'Faculty': 'Faculty',
-        'Staff': 'Staff'
-    }
-
-    def __str__(self):
-        """Returns the name of the model."""
-        return self.name
-
-    name = models.CharField(max_length=255)
-    participant_type = models.CharField(choices=PARTICIPANT_TYPES)
-    department = models.CharField(max_length=255)
-    birthdate = models.DateTimeField(default='2000-0-0 00:00:00')
-
-    class Meta:
-        """Metadata for the model"""
-        verbose_name = 'Participant'
-
 class ActivityBooking(models.Model):
     """A model that represents the ActivityBooking Entity."""
     activity = models.ForeignKey(Activity,
                                  null=False,
                                  on_delete=models.CASCADE,
                                  related_name='activity_bookings')
-    participant = models.ForeignKey(User,
+    participant = models.ForeignKey(Participant,
                                     null=False, 
                                     on_delete=models.CASCADE,
                                     related_name='activity_bookings')

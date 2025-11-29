@@ -21,8 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('account/', include('account.urls', namespace='account')),
     path('account/', include('django.contrib.auth.urls')),
+    path('account/', include('account.urls')),
     path('', include('central_bookings.urls', namespace='central_bookings')),
 ]
 

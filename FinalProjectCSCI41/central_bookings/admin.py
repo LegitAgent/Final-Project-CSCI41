@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib import admin
 
-from .models import Organizer, Activity, Participant, ActivityBooking, Location, Reservation
+from .models import Activity, ActivityBooking, Location, Reservation
 
 """Putting all entities in the database as an inline for the admin"""
 
@@ -24,16 +24,16 @@ class ReservationInLine(admin.TabularInline):
     
 """List all entities categorized by their corresponding models."""
 
-class OrganizerAdmin(admin.ModelAdmin):
-    model = Organizer
-    inlines = [ActivityInLine]
+# class OrganizerAdmin(admin.ModelAdmin):
+#     model = Organizer
+#     inlines = [ActivityInLine]
 
 class ActivityAdmin(admin.ModelAdmin):
     model = Activity
     inlines = [ReservationInLine]
 
-class ParticipantAdmin(admin.ModelAdmin):
-    model = Participant
+# class ParticipantAdmin(admin.ModelAdmin):
+#     model = Participant
 
 class LocationAdmin(admin.ModelAdmin):
     model = Location
@@ -45,7 +45,7 @@ class ReservationAdmin(admin.ModelAdmin):
 """Register all classes."""
 
 admin.site.register(Activity, ActivityAdmin)
-admin.site.register(Organizer, OrganizerAdmin)
-admin.site.register(Participant, ParticipantAdmin)
+# admin.site.register(Organizer, OrganizerAdmin)
+# admin.site.register(Participant, ParticipantAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Reservation, ReservationAdmin)

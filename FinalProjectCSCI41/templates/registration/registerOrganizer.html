@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}   
+  <main class="d-flex justify-content-center align-items-center py-12" id="register-page">
+    <!-- Alert-->
+    {% if register_form.non_field_errors %}
+      <div class="alert alert-dismissible alert-danger d-flex flex-column flex-sm-row p-5 mb-10 mx-auto z-index-3 w-100 w-lg-900px position-absolute top-0 left-0 right-0">
+        <i class="ki-duotone ki-information-5 fs-2hx text-danger me-4 d-none d-md-block">
+          <span class="path1"></span>
+          <span class="path2"></span>
+          <span class="path3"></span>
+        </i>
+
+        <div class="d-flex flex-column text-danger pe-0 pe-sm-10">
+            <h4 class="mb-2 text-danger d-flex d-md-inline">
+              <i class="ki-duotone ki-information-5 fs-1 text-danger me-4 d-md-none d-block ">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+              </i>
+              Form Submission Failure
+            </h4>
+            <span>The following errors have occured:</span>
+            <ul class="mb-0 pb-0">
+              {% for error in register_form.non_field_errors %}
+                <li>{{ error }}</li>            
+              {% endfor %}
+            </ul>
+        </div>
+        <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert">
+          <i class="fa-solid fa-xmark text-danger fs-2"></i>
+        </button>
+      </div>
+    {% endif %}
+    
+    <div class="card d-flex flex-column align-items-stretch flex-center rounded-4 w-md-400px pb-10">
+      <header class="d-flex flex-row w-100 fs-5 fw-semibold text-center mb-10">
+        <a href="/account/register/participant" class="w-100 text-gray-600 border-bottom border-2 py-4">Participant</a>
+        <a href="#" class="w-100 border-bottom border-2 border-primary py-4">Organizer</a>
+      </header>
+      <form method="POST" class="form w-100 fv-plugins-bootstrap5 fv-plugins-framework px-12">
+        {% csrf_token %}
+        
+        <div class="text-center mb-11">
+          <h1 class="text-gray-900 fw-bolder mb-3">Create an Account</h1>
+        </div>
+        <!--
+        <div class="fv-row mb-8 fv-plugins-icon-container">
+          <input id="{{ register_form.display_name.id_for_label }}" name="{{ register_form.display_name.html_name }}" type="text" placeholder="Display Name" autocomplete="off" maxlength="63" class="form-control bg-transparent" required />
+          <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback"></div>
+        </div>
+-->
+        <div class="fv-row mb-8 fv-plugins-icon-container">
+          {{ register_form.id_number }}
+          <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+            {% for error in register_form.id_number.errors %}
+                {{ error }}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="fv-row mb-8 fv-plugins-icon-container">
+          {{ register_form.name }}
+        </div>
+        <div class="fv-row mb-8 fv-plugins-icon-container">
+          {{ register_form.organizer_type }}
+        </div>
+        <div class="fv-row mb-8 fv-plugins-icon-container">
+          {{ register_form.password1 }}
+          <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+            {% for error in register_form.password1.errors %}
+                {{ error }}
+            {% endfor %}
+          </div>
+        </div>
+        <div class="fv-row mb-8 fv-plugins-icon-container">
+          {{ register_form.password2 }}
+          <div class="fv-plugins-message-container fv-plugins-message-container--enabled invalid-feedback">
+            {% for error in register_form.password2.errors %}
+                {{ error }}
+            {% endfor %}
+          </div>
+        </div>
+
+        
+        <div class="d-grid mb-10">
+          <button type="submit" class="btn btn-primary">
+            <span class="">Sign Up</span>
+          </button>
+        </div>
+        <div class="text-gray-500 text-center fw-semibold fs-6">
+          Already have an account?
+          <a href="{% url 'login' %}" class="link-primary">Login</a>
+        </div>
+      </form>
+    </div>
+  </main>
+{% endblock %}

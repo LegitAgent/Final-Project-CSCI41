@@ -27,3 +27,7 @@ span.nav-hover-pill {
   transition: transform 0.2s cubic-bezier(.4, 0, .2, 1),
   width 0.2s ease;
 }
+
+main {
+  margin-top: 72px;
+}
