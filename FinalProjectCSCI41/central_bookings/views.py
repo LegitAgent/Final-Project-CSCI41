@@ -75,7 +75,8 @@ class ActivityUpdateView(UpdateView):
     
     model = Activity
     form_class = ActivityForm
-    template_name = 'activity_update.html'
+    template_name = 'activity_add.html'
+    success_url = reverse_lazy('central_bookings:activity-list')
     
 class ActivityDeleteView(DeleteView):
     """Activity delete view for activities."""

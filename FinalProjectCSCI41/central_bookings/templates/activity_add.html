@@ -1,14 +1,49 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Central Bookings{% endblock %}
 
 {% block content %}
-  <main>
-    <h1>{% if object %}Edit{% else %}Add{% endif %} Activity</h1>
-    <form method="post">
+  <main class="d-flex flex-column justify-content-center align-items-center h-100">
+    {% comment %} <div class="w-100 px-12">
+      <ol class="breadcrumb breadcrumb-arrow text-muted fs-6 fw-bold mb-4">
+        <li class="breadcrumb-item"><i class="ki-duotone ki-home"></i></li>
+        <li class="breadcrumb-item text-gray-700">Activities</li>
+      </ol>
+    </div> {% endcomment %}
+
+    <section class="card shadow-sm p-8 w-md-500px">
+      <h2 class="mb-10">{% if object %}Edit{% else %}Add{% endif %} Activity</h2>
+      <form method="post" class="w-100 d-flex flex-column w-100 gap-8">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
+
+        <div class="position-relative">
+          <label for="name" class="form-label fw-bold">Activity</label>
+          {{ form.name }}
+        </div>
+
+        <div class="position-relative">
+          <label for="organizer" class="form-label fw-bold">Organizer</label>
+          <div class="input-group input-group-solid border border-gray-300">
+            <span class="input-group-text">
+              <i class="ki-duotone ki-profile-circle fs-2">
+                <span class="path1"></span>
+                <span class="path2"></span>
+                <span class="path3"></span>
+              </i>
+            </span>
+            <input type="text" id="organizer" class="form-control form-control-solid text-gray-500 border-left-0 ps-0" value="{{ request.user.first_name }}" disabled/>
+          </div>
+        </div>
+
+        <div class="position-relative">
+          <label for="expected_participants" class="form-label fw-bold">Capacity</label>
+          {{ form.expected_participants }}
+        </div>
+
+        <button class="btn btn-primary w-100 mt-4" type="submit">Save</button>
+      </form>
+    </section>
+    
   </main>
 {% endblock %}

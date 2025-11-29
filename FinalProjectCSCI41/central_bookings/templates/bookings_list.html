@@ -22,7 +22,7 @@
     {% if enlisted_activities %}
         {% for item in enlisted_activities %}
             <article class="card shadow-sm w-md-400px p-8">
-                <h3 class="mb-1"><a href="{{item.activity_url}}">{{item.activity_name}}</a></h3>
+                <h3 class="mb-1">{{ item.activity_name }}</h3>
                 <span class="text-gray-600 fw-bold">{{ item.organizer }}</span>
                 <div class="mt-8 d-flex flex-column gap-2">
                     <span class="d-flex align-items-center gap-2 fw-bold text-primary">
@@ -32,7 +32,7 @@
                         <span class="path3"></span>
                         <span class="path4"></span>
                     </i>
-                    <span class="fs-6 py-1">Available Slots: {{ reservation.location.maximum_capacity }}</span>
+                    <span class="fs-6 py-1">Available Slots: {{ item.maximum_capacity }}</span>
                     </span>
                     <span class="d-flex align-items-center gap-2 fw-bold text-gray-700">
                     <i class="ki-duotone ki-geolocation fs-2">
@@ -62,7 +62,7 @@
                     <form method="POST" class="flex-grow-1 mt-8 mb-0">
                         {% csrf_token %}
                         <input type="hidden" name = "activity_pk" value = "{{ item.activity_pk }}">
-                        <button class="btn btn-primary w-100" type="submit" name ="attendance_check_button" value="Mark as attended">Mark as Attended</button>
+                        <button class="btn btn-success w-100" type="submit" name ="attendance_check_button" value="Mark as attended">Mark as Attended</button>
                     </form>
                 {% endif %}
             </article>

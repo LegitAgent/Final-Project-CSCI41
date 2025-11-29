@@ -18,7 +18,7 @@
     </div>
 
     <!-- Right -->
-    {% if request.user.is_authenticated %}
+    {% if request.user.is_authenticated and user_type == 'organizer' %}
       <a href="{% url 'central_bookings:activity-add' %}" class="btn btn-primary my-auto">
         <i class="ki-duotone ki-plus-square fs-2">
           <span class="path1"></span>
