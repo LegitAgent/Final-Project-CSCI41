@@ -3,9 +3,11 @@
 {% block title %}Central Bookings{% endblock %}
 
 {% block content %}
+  <main>
     <h1>Delete {{ object.name }}?</h1>
     <form method="post">{% csrf_token %}
         <button type="submit">Yes, delete</button>
     </form>
     <a href="{% url 'central_bookings:activity-list' %}">Cancel</a>
+  </main>
 {% endblock %}
